@@ -1,0 +1,78 @@
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.product-card {
+  background-color: #aaa4fc;
+  padding: 20px;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.product-card h3 {
+  margin: 5px 0;
+  font-size: 1.1em;
+  color: #2c3e50;
+}
+
+.product-card p {
+  margin: 4px 0;
+  font-size: 0.95em;
+  color: #333333;
+}
+
+/* + button */
+.btn-add {
+  color: white;
+  background-color: #28a745;
+  border: 1px solid black !important; /* force black border */
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 3px;
+}
+
+/* - button */
+.btn-minus {
+  color: white;
+  background-color: #dc3545;
+  border: 1px solid black !important;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 3px;
+}
+
+/* Add to Cart */
+.btn-cart {
+  color: white;
+  background-color: #007bff;
+  border: 1px solid black !important;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+/* Disabled state */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

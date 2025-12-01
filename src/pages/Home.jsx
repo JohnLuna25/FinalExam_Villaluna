@@ -1,13 +1,13 @@
 import React from "react";
-import "./Home.css";
 import ProductList from "../components/ProductList";
+import "./Home.css";
 
-const Home = () => {
+const Home = ({ products, setProducts }) => {
   return (
     <div className="home-container">
       <h1 className="home-title">Villaluna Hardware Store</h1>
-      <p className="home-subtitle">This is the Home page UI placeholder.</p>
-      <ProductList />
+      <p className="home-subtitle">Browse our products below</p>
+      <ProductList products={products} setProducts={setProducts} />
     </div>
   );
 };
