@@ -1,11 +1,12 @@
-// Example structure of Home.jsx
 import React from "react";
+import "./Home.css";
 import ProductList from "../components/ProductList";
 
 const Home = () => {
   return (
-    <div>
-      <h1>Welcome to the Hardware Store</h1>
+    <div className="home-container">
+      <h1 className="home-title">Villaluna Hardware Store</h1>
+      <p className="home-subtitle">This is the Home page UI placeholder.</p>
       <ProductList />
     </div>
   );
