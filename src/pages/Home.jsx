@@ -1,53 +1,71 @@
 import React, { useState } from "react";
 import ProductList from "../components/ProductList";
-import addToCartPng from "../assets/add-to-cart.png";
+import AddProductForm from "../components/AddProductForm";
 import "./Home.css";
 
-const Home = ({ products, setProducts, cart, setCart, openCart }) => {
-  const [filter, setFilter] = useState("All");
+const Home = () => {
+  const [products, setProducts] = useState([
+    {
+      id: 1,
+      name: "Hammer",
+      category: "Tools",
+      price: 250,
+      stock: 34,
+      description: "Durable hammer suitable for carpentry and home repairs.",
+    },
+    {
+      id: 2,
+      name: "Handsaw",
+      category: "Tools",
+      price: 180,
+      stock: 26,
+      description:
+        "Sharp handsaw for cutting wood and light construction work.",
+    },
+    {
+      id: 3,
+      name: "PVC Pipe Cutter",
+      category: "Tools",
+      price: 740,
+      stock: 7,
+      description:
+        "Heavy-duty cutter for PVC pipes, ideal for plumbing projects.",
+    },
+  ]);
 
-  // Filter products based on category
+  const [filter, setFilter] = useState("All");
+  const [showAddForm, setShowAddForm] = useState(false);
+
   const filteredProducts =
     filter === "All" ? products : products.filter((p) => p.category === filter);
 
   return (
     <div className="home-container">
       <div className="home-header">
-        <div className="title-filter">
-          <h1 className="home-title">Villaluna Hardware Store</h1>
+        <h1 className="home-title">Villaluna Hardware Store</h1>
 
-          {/* Filter dropdown */}
-          <div className="head-filter">
-            <label
-              style={{ color: "white", fontSize: "18px", marginRight: "15px" }}
-            >
-              Filter:{" "}
-            </label>
-            <select
-              className="category-filter"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-            >
-              <option value="All">All</option>
-              <option value="Tools">Tools</option>
-              <option value="Hardware">Hardware</option>
-              <option value="Painting">Painting</option>
-            </select>
-          </div>
+        <div className="head-filter">
+          <label>Filter: </label>
+          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+            <option value="All">All</option>
+            <option value="Tools">Tools</option>
+            <option value="Hardware">Hardware</option>
+            <option value="Painting">Painting</option>
+          </select>
         </div>
 
-        <button className="add-to-cart-btn" onClick={openCart}>
-          <img src={addToCartPng} alt="Cart" />
-        </button>
+        <button onClick={() => setShowAddForm(true)}>Add Product</button>
       </div>
 
-      {/* Pass filteredProducts to ProductList */}
-      <ProductList
-        products={filteredProducts}
-        cart={cart}
-        setCart={setCart}
-        setProducts={setProducts}
-      />
+      <ProductList products={filteredProducts} setProducts={setProducts} />
+
+      {showAddForm && (
+        <AddProductForm
+          products={products}
+          setProducts={setProducts}
+          onClose={() => setShowAddForm(false)}
+        />
+      )}
     </div>
   );
 };

@@ -38,10 +38,23 @@
 
 .price-stock {
   display: flex;
-  justify-content: space-between;
-  width: 80%;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.stock-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   font-weight: bold;
-  margin: 5px 0;
+  margin: 10px 0;
+}
+
+.stock-counter button:hover {
+  background: #0056b3;
 }
 
 .quantity-container {
@@ -66,25 +79,36 @@
   border-radius: 5px;
 }
 
-/* Buttons */
-.btn-add {
-  color: white;
-  background-color: #28a745;
-  border: 1px solid black !important;
-  padding: 5px 10px;
+/* GREEN + Button */
+.btn-plus {
+  padding: 4px 10px;
+  border: none;
   border-radius: 5px;
+  background: #28a745;
+  color: white;
   cursor: pointer;
-  margin: 0 3px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
+.btn-plus:hover {
+  background: #1e7e34;
+}
+
+/* RED - Button */
 .btn-minus {
-  color: white;
-  background-color: #dc3545;
-  border: 1px solid black !important;
-  padding: 5px 10px;
+  padding: 4px 10px;
+  border: none;
   border-radius: 5px;
+  background: #dc3545;
+  color: white;
   cursor: pointer;
-  margin: 0 3px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.btn-minus:hover {
+  background: #b52a37;
 }
 
 .btn-cart {

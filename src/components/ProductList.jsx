@@ -1,94 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
+import ProductList from "../components/ProductList";
+import AddProductForm from "../components/AddProductForm";
 import "./ProductList.css";
 
-const ProductList = ({ products, cart, setCart, setProducts }) => {
-  const getQuantity = (productId) => {
-    const item = cart.find((c) => c.id === productId);
-    return item ? item.quantity : 0;
-  };
+const Home = ({ products, setProducts }) => {
+  const [filter, setFilter] = useState("All");
+  const [showForm, setShowForm] = useState(false); // 👈 ADD THIS
 
-  const increaseQuantity = (product) => {
-    if (getQuantity(product.id) >= product.stock) return;
-    const item = cart.find((c) => c.id === product.id);
-    if (item) {
-      setCart(
-        cart.map((c) =>
-          c.id === product.id ? { ...c, quantity: c.quantity + 1 } : c
-        )
-      );
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
-  };
-
-  const decreaseQuantity = (product) => {
-    const item = cart.find((c) => c.id === product.id);
-    if (!item) return;
-    if (item.quantity === 1) {
-      setCart(cart.filter((c) => c.id !== product.id));
-    } else {
-      setCart(
-        cart.map((c) =>
-          c.id === product.id ? { ...c, quantity: c.quantity - 1 } : c
-        )
-      );
-    }
-  };
-
-  const addToCart = (product) => {
-    if (getQuantity(product.id) >= product.stock) return; // cannot exceed stock
-    increaseQuantity(product);
-
-    // decrease product stock
-    setProducts(
-      products.map((p) =>
-        p.id === product.id ? { ...p, stock: p.stock - 1 } : p
-      )
-    );
-  };
+  const filteredProducts =
+    filter === "All" ? products : products.filter((p) => p.category === filter);
 
   return (
-    <div className="product-list">
-      {products.map((product) => (
-        <div className="product-card" key={product.id}>
-          <img src={product.image} alt={product.name} />
-          <h3>{product.name}</h3>
+    <div className="home-container">
+      <div className="home-header">
+        {/* Title */}
+        <h1 className="home-title">Villaluna Hardware Store</h1>
 
-          <div className="price-stock">
-            <span>Price: ₱{product.price}</span>
-            <span>Stock: {product.stock}</span>
-          </div>
+        {/* Add Product Button */}
+        <button
+          className="add-product-btn"
+          onClick={() => setShowForm(true)} // 👈 SHOW THE FORM
+        >
+          Add Product
+        </button>
+      </div>
 
-          {product.stock <= 15 && product.stock > 0 && (
-            <p style={{ color: "red", fontWeight: "bold" }}>Low Stock!</p>
-          )}
+      {/* Filter */}
+      <div className="head-filter">
+        <label>Filter:</label>
+        <select
+          className="category-filter"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="Tools">Tools</option>
+          <option value="Hardware">Hardware</option>
+          <option value="Painting">Painting</option>
+        </select>
+      </div>
 
-          <div className="quantity-container">
-            Quantity:{" "}
-            <button
-              className="btn-add"
-              onClick={() => increaseQuantity(product)}
-            >
-              +
-            </button>
-            {getQuantity(product.id)}{" "}
-            <button
-              className="btn-minus"
-              onClick={() => decreaseQuantity(product)}
-            >
-              -
-            </button>{" "}
-          </div>
+      {/* SHOW FORM ONLY WHEN CLICKED */}
+      {showForm && (
+        <AddProductForm
+          setProducts={setProducts}
+          onClose={() => setShowForm(false)} // 👈 CLOSE THE FORM
+        />
+      )}
 
-          <button className="btn-cart" onClick={() => addToCart(product)}>
-            Add to Cart
-          </button>
-
-          <p style={{ textAlign: "justify" }}>{product.description}</p>
-        </div>
-      ))}
+      {/* Product List */}
+      <ProductList
+        products={filteredProducts}
+        fullProducts={products}
+        setProducts={setProducts}
+      />
     </div>
   );
 };
 
-export default ProductList;
+export default Home;
