@@ -12,12 +12,11 @@
 }
 
 .form-modal {
-  background-color: #fff;
+  background: #fff;
   padding: 30px;
   border-radius: 10px;
   width: 400px;
   max-width: 90%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 
 .form-modal h2 {
@@ -31,13 +30,26 @@ form label {
   font-weight: bold;
 }
 
+/* Updated: White background, border, and right-aligned text */
 form input,
 form select,
 form textarea {
   width: 100%;
   padding: 7px;
   border-radius: 5px;
-  border: 1px solid #ccc;
+  border: 2px solid #000000; /* Added border */
+  background-color: rgb(174, 172, 240); /* White background */
+  text-align: center; /* Right-aligned text */
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+  color: black;
+}
+
+/* Optional: Change border color on focus */
+form input:focus,
+form select:focus,
+form textarea:focus {
+  border-color: #0056b3;
+  outline: none;
 }
 
 form textarea {
@@ -46,14 +58,14 @@ form textarea {
 }
 
 .form-buttons {
-  margin-top: 15px;
   display: flex;
   justify-content: space-between;
+  margin-top: 15px;
 }
 
 .submit-btn {
-  background-color: #28a745;
-  color: white;
+  background: #28a745;
+  color: #fff;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
@@ -61,8 +73,8 @@ form textarea {
 }
 
 .close-btn {
-  background-color: #dc3545;
-  color: white;
+  background: #dc3545;
+  color: #fff;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;

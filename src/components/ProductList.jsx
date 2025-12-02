@@ -1,61 +1,79 @@
-import React, { useState } from "react";
-import ProductList from "../components/ProductList";
-import AddProductForm from "../components/AddProductForm";
+import React from "react";
 import "./ProductList.css";
 
-const Home = ({ products, setProducts }) => {
-  const [filter, setFilter] = useState("All");
-  const [showForm, setShowForm] = useState(false); // 👈 ADD THIS
+const ProductList = ({ products, setProducts }) => {
+  const handleDelete = (id) => {
+    if (window.confirm("Delete this product?")) {
+      setProducts(products.filter((p) => p.id !== id));
+    }
+  };
 
-  const filteredProducts =
-    filter === "All" ? products : products.filter((p) => p.category === filter);
+  const increaseStock = (id) => {
+    setProducts(
+      products.map((product) =>
+        product.id === id ? { ...product, stock: product.stock + 1 } : product
+      )
+    );
+  };
+
+  const decreaseStock = (id) => {
+    setProducts(
+      products.map((product) =>
+        product.id === id && product.stock > 0
+          ? { ...product, stock: product.stock - 1 }
+          : product
+      )
+    );
+  };
 
   return (
-    <div className="home-container">
-      <div className="home-header">
-        {/* Title */}
-        <h1 className="home-title">Villaluna Hardware Store</h1>
+    <div className="product-list">
+      {products.length === 0 ? (
+        <p>No products found.</p>
+      ) : (
+        products.map((product) => (
+          <div key={product.id} className="product-card">
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>Category: {product.category}</p>
+            <p>Price: ₱{product.price}</p>
 
-        {/* Add Product Button */}
-        <button
-          className="add-product-btn"
-          onClick={() => setShowForm(true)} // 👈 SHOW THE FORM
-        >
-          Add Product
-        </button>
-      </div>
+            <p>
+              Stock: {product.stock}{" "}
+              <button
+                className="stock-plus-btn"
+                onClick={() => increaseStock(product.id)}
+              >
+                +
+              </button>{" "}
+              <button
+                className="stock-minus-btn"
+                onClick={() => decreaseStock(product.id)}
+              >
+                -
+              </button>
+            </p>
 
-      {/* Filter */}
-      <div className="head-filter">
-        <label>Filter:</label>
-        <select
-          className="category-filter"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        >
-          <option value="All">All</option>
-          <option value="Tools">Tools</option>
-          <option value="Hardware">Hardware</option>
-          <option value="Painting">Painting</option>
-        </select>
-      </div>
+            {/* Low Stock Warning on separate line */}
+            {product.stock < 5 && (
+              <p className="low-stock-warning">⚠ Low Stock!</p>
+            )}
 
-      {/* SHOW FORM ONLY WHEN CLICKED */}
-      {showForm && (
-        <AddProductForm
-          setProducts={setProducts}
-          onClose={() => setShowForm(false)} // 👈 CLOSE THE FORM
-        />
+            <p>Subtotal: ₱{product.price * product.stock}</p>
+
+            <p className="justified-text">{product.description}</p>
+
+            <button
+              className="red-delete-btn"
+              onClick={() => handleDelete(product.id)}
+            >
+              Delete
+            </button>
+          </div>
+        ))
       )}
-
-      {/* Product List */}
-      <ProductList
-        products={filteredProducts}
-        fullProducts={products}
-        setProducts={setProducts}
-      />
     </div>
   );
 };
 
-export default Home;
+export default ProductList;

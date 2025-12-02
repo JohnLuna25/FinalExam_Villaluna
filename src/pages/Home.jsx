@@ -3,36 +3,7 @@ import ProductList from "../components/ProductList";
 import AddProductForm from "../components/AddProductForm";
 import "./Home.css";
 
-const Home = () => {
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Hammer",
-      category: "Tools",
-      price: 250,
-      stock: 34,
-      description: "Durable hammer suitable for carpentry and home repairs.",
-    },
-    {
-      id: 2,
-      name: "Handsaw",
-      category: "Tools",
-      price: 180,
-      stock: 26,
-      description:
-        "Sharp handsaw for cutting wood and light construction work.",
-    },
-    {
-      id: 3,
-      name: "PVC Pipe Cutter",
-      category: "Tools",
-      price: 740,
-      stock: 7,
-      description:
-        "Heavy-duty cutter for PVC pipes, ideal for plumbing projects.",
-    },
-  ]);
-
+const Home = ({ products, setProducts }) => {
   const [filter, setFilter] = useState("All");
   const [showAddForm, setShowAddForm] = useState(false);
 
@@ -42,7 +13,8 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="home-header">
-        <h1 className="home-title">Villaluna Hardware Store</h1>
+        <h1 className="home-title">Villaluna's Hardware Store</h1>
+        <h2 className="sub-title">Your Best Friend in Building!</h2>
 
         <div className="head-filter">
           <label>Filter: </label>
@@ -54,7 +26,13 @@ const Home = () => {
           </select>
         </div>
 
-        <button onClick={() => setShowAddForm(true)}>Add Product</button>
+        {/* Add Product button */}
+        <button
+          className="add-product-btn"
+          onClick={() => setShowAddForm(true)}
+        >
+          Add Product
+        </button>
       </div>
 
       <ProductList products={filteredProducts} setProducts={setProducts} />

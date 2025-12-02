@@ -29,16 +29,18 @@ const AddProductForm = ({ products, setProducts, onClose }) => {
   };
 
   return (
-    <div className="add-product-overlay">
-      <div className="add-product-form">
+    <div className="form-overlay">
+      <div className="form-modal">
         <h2>Add New Product</h2>
         <form onSubmit={handleSubmit}>
+          <label>Product Name</label>
           <input
             type="text"
-            placeholder="Product Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+
+          <label>Category</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -47,27 +49,35 @@ const AddProductForm = ({ products, setProducts, onClose }) => {
             <option value="Hardware">Hardware</option>
             <option value="Painting">Painting</option>
           </select>
+
+          <label>Price</label>
           <input
             type="number"
-            placeholder="Price"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
+
+          <label>Stock</label>
           <input
             type="number"
-            placeholder="Stock"
             value={stock}
             onChange={(e) => setStock(e.target.value)}
           />
+
+          <label>Description</label>
           <textarea
-            placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-          <button type="submit">Add Product</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+
+          <div className="form-buttons">
+            <button type="submit" className="submit-btn">
+              Add Product
+            </button>
+            <button type="button" className="close-btn" onClick={onClose}>
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
