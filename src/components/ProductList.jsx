@@ -1,85 +1,92 @@
-import React, { useState } from "react";
+import React from "react";
 import "./ProductList.css";
 
-const ProductList = ({ products, addToCart }) => {
-  const [quantities, setQuantities] = useState({});
-
-  const increase = (id) => {
-    setQuantities({
-      ...quantities,
-      [id]: (quantities[id] || 0) + 1,
-    });
+const ProductList = ({ products, cart, setCart, setProducts }) => {
+  const getQuantity = (productId) => {
+    const item = cart.find((c) => c.id === productId);
+    return item ? item.quantity : 0;
   };
 
-  const decrease = (id) => {
-    if ((quantities[id] || 0) > 0) {
-      setQuantities({
-        ...quantities,
-        [id]: quantities[id] - 1,
-      });
+  const increaseQuantity = (product) => {
+    if (getQuantity(product.id) >= product.stock) return;
+    const item = cart.find((c) => c.id === product.id);
+    if (item) {
+      setCart(
+        cart.map((c) =>
+          c.id === product.id ? { ...c, quantity: c.quantity + 1 } : c
+        )
+      );
+    } else {
+      setCart([...cart, { ...product, quantity: 1 }]);
     }
   };
 
-  const handleAddToCart = (product) => {
-    const quantity = quantities[product.id] || 0;
-    if (quantity > 0) {
-      addToCart(product, quantity);
-      setQuantities({
-        ...quantities,
-        [product.id]: 0,
-      });
+  const decreaseQuantity = (product) => {
+    const item = cart.find((c) => c.id === product.id);
+    if (!item) return;
+    if (item.quantity === 1) {
+      setCart(cart.filter((c) => c.id !== product.id));
+    } else {
+      setCart(
+        cart.map((c) =>
+          c.id === product.id ? { ...c, quantity: c.quantity - 1 } : c
+        )
+      );
     }
+  };
+
+  const addToCart = (product) => {
+    if (getQuantity(product.id) >= product.stock) return; // cannot exceed stock
+    increaseQuantity(product);
+
+    // decrease product stock
+    setProducts(
+      products.map((p) =>
+        p.id === product.id ? { ...p, stock: p.stock - 1 } : p
+      )
+    );
   };
 
   return (
     <div className="product-list">
-      {products.map((product) => {
-        const q = quantities[product.id] || 0;
-        const lowStock = product.stock <= 5;
+      {products.map((product) => (
+        <div className="product-card" key={product.id}>
+          <img src={product.image} alt={product.name} />
+          <h3>{product.name}</h3>
 
-        return (
-          <div className="product-card" key={product.id}>
-            <img src={product.image} alt={product.name} />
-            <h3>{product.name}</h3>
-            <div className="price-stock">
-              <p>Price: ₱{product.price}</p>
-              <p>Stock: {product.stock}</p>
-            </div>
-            {lowStock && (
-              <p style={{ color: "red", fontWeight: "bold" }}>Low Stock!</p>
-            )}
-
-            {/* FIXED QUANTITY DISPLAY */}
-            <div className="quantity-container">
-              <span className="quantity-label">Quantity: </span>
-
-              <button className="btn-add" onClick={() => increase(product.id)}>
-                +
-              </button>
-
-              <span className="quantity-number"> {q} </span>
-
-              <button
-                className="btn-minus"
-                onClick={() => decrease(product.id)}
-                disabled={q === 0}
-              >
-                -
-              </button>
-            </div>
-
-            <button
-              className="btn-cart"
-              disabled={q === 0 || product.stock === 0}
-              onClick={() => handleAddToCart(product)}
-            >
-              Add to Cart
-            </button>
-
-            <p>{product.description}</p>
+          <div className="price-stock">
+            <span>Price: ₱{product.price}</span>
+            <span>Stock: {product.stock}</span>
           </div>
-        );
-      })}
+
+          {product.stock <= 15 && product.stock > 0 && (
+            <p style={{ color: "red", fontWeight: "bold" }}>Low Stock!</p>
+          )}
+
+          <div className="quantity-container">
+            Quantity:{" "}
+            <button
+              className="btn-add"
+              onClick={() => increaseQuantity(product)}
+            >
+              +
+            </button>
+            {getQuantity(product.id)}{" "}
+            <button
+              className="btn-minus"
+              onClick={() => decreaseQuantity(product)}
+            >
+              -
+            </button>{" "}
+          </div>
+
+          <button className="btn-cart" onClick={() => addToCart(product)}>
+            Add to Cart
+          </button>
+
+          <p style={{ textAlign: "justify" }}>{product.description}</p>
+        </div>
+      ))}
     </div>
   );
 };

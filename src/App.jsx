@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Home from "./pages/Home";
 import AddToCart from "./components/AddToCart";
+import ProductList from "./components/ProductList";
 
 import hammerPng from "./assets/hammer.png";
 import handsawPng from "./assets/handsaw.png";
@@ -161,7 +162,6 @@ const App = () => {
         setProducts={setProducts}
         cart={cart}
         setCart={setCart}
-        addToCart={addToCart}
         openCart={() => setShowCart(true)}
       />
 

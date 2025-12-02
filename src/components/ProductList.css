@@ -1,12 +1,14 @@
+/* Product grid */
 .product-list {
   display: flex;
   flex-wrap: wrap;
   gap: 50px;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 50px;
 }
 
+/* Card styling */
 .product-card {
   background-color: #aaa4fc;
   padding: 20px;
@@ -24,8 +26,8 @@
   width: 120px;
   height: 120px;
   object-fit: cover;
-  margin-bottom: 10px;
   border-radius: 5px;
+  margin: 15px 0 10px 0; /* fix ghost layer at top */
 }
 
 .product-card h3 {
@@ -34,36 +36,47 @@
   color: #2c3e50;
 }
 
-.product-card p {
-  margin: 4px 0;
-  font-size: 0.95em;
-  color: #333333;
-}
-
 .price-stock {
   display: flex;
   justify-content: space-between;
   width: 80%;
   font-weight: bold;
-  margin: px 0;
+  margin: 5px 0;
 }
 
 .quantity-container {
   font-weight: bold;
 }
 
-/* + button */
+/* Low stock text */
+.low-stock {
+  color: red;
+  font-weight: bold;
+}
+
+/* Filter dropdown */
+.filter-container {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.filter-container select {
+  margin-left: 10px;
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+/* Buttons */
 .btn-add {
   color: white;
   background-color: #28a745;
-  border: 1px solid black !important; /* force black border */
+  border: 1px solid black !important;
   padding: 5px 10px;
   border-radius: 5px;
   cursor: pointer;
   margin: 0 3px;
 }
 
-/* - button */
 .btn-minus {
   color: white;
   background-color: #dc3545;
@@ -74,7 +87,6 @@
   margin: 0 3px;
 }
 
-/* Add to Cart */
 .btn-cart {
   color: white;
   background-color: #007bff;
