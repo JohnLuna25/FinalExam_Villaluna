@@ -26,9 +26,18 @@ const Home = ({ products, setProducts }) => {
           </select>
         </div>
 
-        {/* Add Product button */}
         <button
-          className="add-product-btn"
+          style={{
+            padding: "8px 14px",
+            background: "#28a745",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            marginTop: "-4px",
+            marginLeft: "0",
+            width: "fit-content",
+          }}
           onClick={() => setShowAddForm(true)}
         >
           Add Product

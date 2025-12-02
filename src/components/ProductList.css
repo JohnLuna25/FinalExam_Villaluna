@@ -7,7 +7,7 @@
 }
 
 .product-card {
-  margin-top: 50px;
+  margin-top: 10px;
   background-color: #d3d3d3;
   padding: 15px;
   border-radius: 10px;
@@ -41,12 +41,12 @@
 }
 
 .stock-plus-btn {
-  background-color: #28a745; /* Green */
+  background-color: #28a745;
   color: white;
 }
 
 .stock-minus-btn {
-  background-color: #ff8c00; /* Orange */
+  background-color: #ff8c00;
   color: white;
 }
 
@@ -58,4 +58,29 @@
   border-radius: 5px;
   cursor: pointer;
   border: 2px solid;
+}
+
+.total-subtotal {
+  margin: 0 auto;
+  text-align: center;
+  background-color: #98ff98;
+  color: white;
+  height: 90px;
+  width: 50%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.total-subtotal h3 {
+  margin: 0;
+  font-size: 20px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+.total-subtotal h2 {
+  margin: 0;
+  font-size: 37px;
+  color: rgb(0, 0, 0);
+  text-align: center;
 }
