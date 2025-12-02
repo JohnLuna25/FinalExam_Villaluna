@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Home from "./pages/Home";
+import AddToCart from "./components/AddToCart";
 
 import hammerPng from "./assets/hammer.png";
 import handsawPng from "./assets/handsaw.png";
@@ -13,14 +14,12 @@ import electricalTapePng from "./assets/electrical-tape.png";
 import teflonTape from "./assets/teflon-tape.png";
 
 const App = () => {
-  // Default products
   const [products, setProducts] = useState([
     {
       id: 1,
       name: "Hammer",
       category: "Tools",
       price: 250,
-      quantity: 0,
       stock: 34,
       initialStock: 34,
       image: hammerPng,
@@ -31,7 +30,6 @@ const App = () => {
       name: "Handsaw",
       category: "Tools",
       price: 180,
-      quantity: 0,
       stock: 26,
       initialStock: 26,
       image: handsawPng,
@@ -43,7 +41,6 @@ const App = () => {
       name: "PVC Pipe Cutter",
       category: "Tools",
       price: 740,
-      quantity: 0,
       stock: 7,
       initialStock: 7,
       image: pvcPipeCutterPng,
@@ -55,7 +52,6 @@ const App = () => {
       name: "Tape Measure",
       category: "Tools",
       price: 120,
-      quantity: 0,
       stock: 72,
       initialStock: 72,
       image: tapeMeasurePng,
@@ -66,7 +62,6 @@ const App = () => {
       name: "Nails (100 pcs)",
       category: "Hardware",
       price: 80,
-      quantity: 0,
       stock: 800,
       initialStock: 800,
       image: nailsPng,
@@ -77,7 +72,6 @@ const App = () => {
       name: "Screws (100 pcs)",
       category: "Hardware",
       price: 70,
-      quantity: 0,
       stock: 600,
       initialStock: 600,
       image: screwsPng,
@@ -88,7 +82,6 @@ const App = () => {
       name: "Paint (1L)",
       category: "Painting",
       price: 450,
-      quantity: 0,
       stock: 12,
       initialStock: 12,
       image: paintPng,
@@ -99,7 +92,6 @@ const App = () => {
       name: "Paint Brush",
       category: "Painting",
       price: 35,
-      quantity: 0,
       stock: 4,
       initialStock: 4,
       image: paintBrushPng,
@@ -110,7 +102,6 @@ const App = () => {
       name: "Electrical Tape",
       category: "Hardware",
       price: 25,
-      quantity: 0,
       stock: 50,
       initialStock: 50,
       image: electricalTapePng,
@@ -121,7 +112,6 @@ const App = () => {
       name: "Teflon Tape",
       category: "Hardware",
       price: 20,
-      quantity: 0,
       stock: 50,
       initialStock: 50,
       image: teflonTape,
@@ -129,7 +119,63 @@ const App = () => {
     },
   ]);
 
-  return <Home products={products} setProducts={setProducts} />;
+  const [cart, setCart] = useState([]);
+  const [showCart, setShowCart] = useState(false);
+
+  // Save products to localStorage (optional)
+  useEffect(() => {
+    localStorage.setItem("products", JSON.stringify(products));
+  }, [products]);
+
+  // Add to cart function (passed to Home and ProductList)
+  const addToCart = (product, quantity) => {
+    if (quantity <= 0) return;
+
+    const existing = cart.find((item) => item.id === product.id);
+
+    // Deduct stock
+    setProducts(
+      products.map((p) =>
+        p.id === product.id ? { ...p, stock: p.stock - quantity } : p
+      )
+    );
+
+    if (existing) {
+      // Update quantity
+      setCart(
+        cart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        )
+      );
+    } else {
+      setCart([...cart, { ...product, quantity }]);
+    }
+  };
+
+  return (
+    <>
+      <Home
+        products={products}
+        setProducts={setProducts}
+        cart={cart}
+        setCart={setCart}
+        addToCart={addToCart}
+        openCart={() => setShowCart(true)}
+      />
+
+      {showCart && (
+        <AddToCart
+          cart={cart}
+          setCart={setCart}
+          products={products}
+          setProducts={setProducts}
+          onClose={() => setShowCart(false)}
+        />
+      )}
+    </>
+  );
 };
 
 export default App;

@@ -1,99 +1,85 @@
 import React, { useState } from "react";
 import "./ProductList.css";
 
-const ProductList = ({ products, setProducts }) => {
-  const [categoryFilter, setCategoryFilter] = useState("All");
+const ProductList = ({ products, addToCart }) => {
+  const [quantities, setQuantities] = useState({});
 
-  const filteredProducts =
-    categoryFilter === "All"
-      ? products
-      : products.filter((p) => p.category === categoryFilter);
-
-  const increaseQuantity = (id) => {
-    setProducts(
-      products.map((p) =>
-        p.id === id && p.stock > 0 ? { ...p, stock: p.stock - 1 } : p
-      )
-    );
+  const increase = (id) => {
+    setQuantities({
+      ...quantities,
+      [id]: (quantities[id] || 0) + 1,
+    });
   };
 
-  const decreaseQuantity = (id) => {
-    setProducts(
-      products.map((p) =>
-        p.id === id && p.stock < p.initialStock
-          ? { ...p, stock: p.stock + 1 }
-          : p
-      )
-    );
+  const decrease = (id) => {
+    if ((quantities[id] || 0) > 0) {
+      setQuantities({
+        ...quantities,
+        [id]: quantities[id] - 1,
+      });
+    }
   };
 
-  const addToCart = (product) => {
-    if (product.stock === 0) return;
-    alert(`${product.name} added to cart!`);
+  const handleAddToCart = (product) => {
+    const quantity = quantities[product.id] || 0;
+    if (quantity > 0) {
+      addToCart(product, quantity);
+      setQuantities({
+        ...quantities,
+        [product.id]: 0,
+      });
+    }
   };
 
   return (
-    <div>
-      <label style={{ color: "white" }}>
-        Filter by Category:{" "}
-        <select onChange={(e) => setCategoryFilter(e.target.value)}>
-          <option value="All">All</option>
-          <option value="Tools">Tools</option>
-          <option value="Hardware">Hardware</option>
-          <option value="Painting">Painting</option>
-        </select>
-      </label>
+    <div className="product-list">
+      {products.map((product) => {
+        const q = quantities[product.id] || 0;
+        const lowStock = product.stock <= 5;
 
-      <div className="product-list">
-        {filteredProducts.map((product) => {
-          const orderedAmount = product.initialStock - product.stock;
-
-          return (
-            <div className="product-card" key={product.id}>
-              <img src={product.image} alt={product.name} />
-              <h3>{product.name}</h3>
+        return (
+          <div className="product-card" key={product.id}>
+            <img src={product.image} alt={product.name} />
+            <h3>{product.name}</h3>
+            <div className="price-stock">
               <p>Price: ₱{product.price}</p>
-              <p>
-                Quantity:{" "}
-                <button
-                  className="btn-add"
-                  onClick={() => increaseQuantity(product.id)}
-                  disabled={product.stock === 0} // can't increase if no stock
-                >
-                  +
-                </button>{" "}
-                {orderedAmount}{" "}
-                <button
-                  className="btn-minus"
-                  onClick={() => decreaseQuantity(product.id)}
-                  disabled={orderedAmount === 0} // can't go below 0
-                >
-                  -
-                </button>
-              </p>
-
-              <p>Subtotal: ₱{product.price * orderedAmount}</p>
               <p>Stock: {product.stock}</p>
+            </div>
+            {lowStock && (
+              <p style={{ color: "red", fontWeight: "bold" }}>Low Stock!</p>
+            )}
 
-              {product.stock === 0 ? (
-                <p style={{ color: "red" }}>No more stocks available!</p>
-              ) : product.stock < 15 ? (
-                <p style={{ color: "orange" }}>Low Stock!</p>
-              ) : null}
+            {/* FIXED QUANTITY DISPLAY */}
+            <div className="quantity-container">
+              <span className="quantity-label">Quantity: </span>
+
+              <button className="btn-add" onClick={() => increase(product.id)}>
+                +
+              </button>
+
+              <span className="quantity-number"> {q} </span>
 
               <button
-                className="btn-cart"
-                style={{ color: "white", backgroundColor: "#1c68f5ff" }}
-                onClick={() => addToCart(product)}
-                disabled={product.stock === 0} // can't add to cart if no stock
+                className="btn-minus"
+                onClick={() => decrease(product.id)}
+                disabled={q === 0}
               >
-                Add to Cart
+                -
               </button>
-              <p>{product.description}</p>
             </div>
-          );
-        })}
-      </div>
+
+            <button
+              className="btn-cart"
+              disabled={q === 0 || product.stock === 0}
+              onClick={() => handleAddToCart(product)}
+            >
+              Add to Cart
+            </button>
+
+            <p>{product.description}</p>
+          </div>
+        );
+      })}
     </div>
   );
 };
